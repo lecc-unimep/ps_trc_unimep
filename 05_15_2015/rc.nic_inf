@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+# /etc/rc.d/rc.nic_inf
+#
+# start/stop/restart/status para o servico NIC_INF.
+#
+#
+
+case "$1" in
+   'start')
+      echo "Inicializando o servico NIC_INF."
+      rm /var/run/nic_inf.pid
+      /tmp/nic_inf.sh & 2>/dev/null
+   ;;
+   'stop')
+      echo "Interrompendo o servico NIC_INF."
+      kill -9 $(cat /var/run/nic_inf.pid)
+      rm /var/run/nic_inf.pid
+   ;;
+   'status')
+      if [ -e "/var/run/nic_inf.pid" ]
+      then
+          echo "O servico NIC_INF esta em funcionamento."
+      else
+          echo "O servico NIC_INF nao esta em funcionamento."
+      fi
+   ;;
+   'restart')
+      echo "Reinicializando o servico NIC_INF."
+      kill -9 $(cat /var/run/nic_inf.pid)
+      rm /var/run/nic_inf.pid
+      /tmp/nic_inf.sh & 2>/dev/null
+   ;;
+   *)
+      echo "Uso $0 start|stop|status|restart" ;;
+esac
+
